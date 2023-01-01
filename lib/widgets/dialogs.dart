@@ -100,3 +100,107 @@ class ChangeParamDialog extends StatelessWidget {
     }));
   }
 }
+
+class ChangeDownloadPrefDialog extends StatelessWidget {
+  const ChangeDownloadPrefDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<PrefModel>(builder: ((context, pref, child) {
+      return SimpleDialog(
+        title: const Text("Set prefered size"),
+        children: [
+          Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DropdownButtonFormField<Size>(
+                  decoration: const InputDecoration(
+                      icon: Icon(Icons.image),
+                      border: OutlineInputBorder(),
+                      labelText: "Preview image size"),
+                  items: const [
+                    DropdownMenuItem<Size>(
+                      value: Size.full,
+                      child: Text("Full"),
+                    ),
+                    DropdownMenuItem<Size>(
+                      value: Size.large,
+                      child: Text("Large"),
+                    )
+                  ],
+                  value: pref.imageSize,
+                  onChanged: ((value) {
+                    pref.imageSize = value ?? pref.imageSize;
+                  }))),
+          Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DropdownButtonFormField<Size>(
+                  decoration: const InputDecoration(
+                      icon: Icon(Icons.video_file),
+                      border: OutlineInputBorder(),
+                      labelText: "Preview video size"),
+                  items: const [
+                    DropdownMenuItem<Size>(
+                      value: Size.full,
+                      child: Text("Full"),
+                    ),
+                    DropdownMenuItem<Size>(
+                      value: Size.medium,
+                      child: Text("Medium"),
+                    )
+                  ],
+                  value: pref.videoSize,
+                  onChanged: ((value) {
+                    pref.videoSize = value ?? pref.videoSize;
+                  }))),
+          Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DropdownButtonFormField<Size>(
+                  decoration: const InputDecoration(
+                      icon: Icon(Icons.download),
+                      border: OutlineInputBorder(),
+                      labelText: "Download size"),
+                  items: const [
+                    DropdownMenuItem<Size>(
+                      value: Size.full,
+                      child: Text("Full"),
+                    ),
+                    DropdownMenuItem<Size>(
+                      value: Size.large,
+                      child: Text("Large"),
+                    )
+                  ],
+                  value: pref.downloadSize,
+                  onChanged: ((value) {
+                    pref.downloadSize = value ?? pref.downloadSize;
+                  }))),
+          Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DropdownButtonFormField<Size>(
+                  decoration: const InputDecoration(
+                      icon: Icon(Icons.share),
+                      border: OutlineInputBorder(),
+                      labelText: "Share size"),
+                  items: const [
+                    DropdownMenuItem<Size>(
+                      value: Size.full,
+                      child: Text("Full"),
+                    ),
+                    DropdownMenuItem<Size>(
+                      value: Size.large,
+                      child: Text("Large"),
+                    ),
+                    DropdownMenuItem<Size>(
+                      value: Size.medium,
+                      child: Text("Medium"),
+                    )
+                  ],
+                  value: pref.shareSize,
+                  onChanged: ((value) {
+                    pref.shareSize = value ?? pref.shareSize;
+                    Navigator.pop(context, null);
+                  }))),
+        ],
+      );
+    }));
+  }
+}

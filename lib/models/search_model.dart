@@ -6,7 +6,7 @@ import 'package:derpiviewer/models/pref_model.dart';
 import 'package:flutter/widgets.dart';
 
 class SearchModel extends SearchInterface {
-  late PrefModel _prefModel;
+  late PrefModel prefModel;
 
   List<ImageResponse> results = <ImageResponse>[];
   int page = 1;
@@ -15,22 +15,22 @@ class SearchModel extends SearchInterface {
   String _query = "";
 
   SearchModel(PrefModel model) {
-    _prefModel = model;
+    prefModel = model;
   }
 
   Future _fetchResult({String? query, bool refresh = false}) async {
     if (query == null && _query.isEmpty) return;
     over = !(query != _query);
     if (over && !refresh) return;
-    PrefParams params = _prefModel.params;
+    PrefParams params = prefModel.params;
     _query = refresh ? query ?? _query : _query;
     page = refresh ? 1 : page + 1;
     List<ImageResponse> more = await fetchImages(
-        booru: _prefModel.booruHost,
+        booru: prefModel.booruHost,
         query: query ?? _query,
         filterID: params.filterID,
         page: page,
-        key: _prefModel.key,
+        key: prefModel.key,
         perPage: params.perPage,
         sortDirection: ConstStrings.sds[params.sortDirection.index],
         sortField: ConstStrings.sfs[params.sortField.index]);
@@ -49,8 +49,8 @@ class SearchModel extends SearchInterface {
   void newSearch(String query) async {
     log(query);
     await _fetchResult(query: query, refresh: true);
-    _prefModel.history.add(query);
-    _prefModel.historyCount = _prefModel.history.length;
+    prefModel.history.add(query);
+    prefModel.historyCount = prefModel.history.length;
   }
 
   @override
@@ -104,7 +104,12 @@ class SearchModel extends SearchInterface {
 
   @override
   Booru getBooru() {
-    return _prefModel.booru;
+    return prefModel.booru;
+  }
+
+  @override
+  PrefModel getPref() {
+    return prefModel;
   }
 }
 
@@ -116,4 +121,5 @@ abstract class SearchInterface extends ChangeNotifier {
   ContentFormat getItemFormat(int index);
   void fetchMore({bool refresh});
   Booru getBooru();
+  PrefModel getPref();
 }

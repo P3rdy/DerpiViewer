@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:derpiviewer/enums.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:media_scanner/media_scanner.dart';
@@ -71,17 +72,23 @@ class DownloadHelper {
     switch (booru) {
       case Booru.derpi:
       case Booru.trixie:
-        bs = "derpi";
+        bs = "Derpibooru";
         break;
       case Booru.pony:
-        bs = "pony";
+        bs = "Ponybooru";
         break;
       default:
     }
-    var response = await http.get(Uri.parse(uri));
-    Uint8List bytes = response.bodyBytes;
-    ShareResult result = await Share.shareXFiles(
-        [XFile.fromData(bytes, mimeType: ConstStrings.mime[type.index])]);
+    var file = await DefaultCacheManager().getSingleFile(uri);
+
+    // var response = await http.get(Uri.parse(uri));
+    // Uint8List bytes = response.bodyBytes;
+
+    ShareResult result = await Share.shareXFiles([
+      XFile(file.path,
+          name: "$bs-$id.${ConstStrings.format[type.index]}",
+          mimeType: ConstStrings.mime[type.index])
+    ], text: "$bs, ID: $id");
     if (result.status == ShareResultStatus.success) {
       Fluttertoast.showToast(msg: "Shared");
     }

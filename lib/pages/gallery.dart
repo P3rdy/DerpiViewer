@@ -37,12 +37,13 @@ class _GalleryViewState extends State<GalleryView> {
             child: () {
               if (_model.getItemFormat(index) == ContentFormat.webm) {
                 return VideoView(
-                  src: _model.getItemUrl(index, Size.medium),
+                  src: _model.getItemUrl(index, _model.getPref().videoSize),
                 );
               } else {
                 return Center(
                     child: CachedNetworkImage(
-                  imageUrl: _model.getItemUrl(index, Size.full),
+                  imageUrl:
+                      _model.getItemUrl(index, _model.getPref().imageSize),
                   progressIndicatorBuilder: (context, url, progress) => Center(
                       child: CircularProgressIndicator(
                     value: progress.progress,
@@ -172,9 +173,10 @@ class _PauseAnimState extends State<PauseAnim> {
 }
 
 class GalleryToolBar extends StatelessWidget {
-  SearchInterface model;
-  PageController controller;
-  GalleryToolBar({super.key, required this.model, required this.controller});
+  final SearchInterface model;
+  final PageController controller;
+  const GalleryToolBar(
+      {super.key, required this.model, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +207,7 @@ class GalleryToolBar extends StatelessWidget {
                   Fluttertoast.showToast(msg: "Downloading");
                 }
                 DownloadHelper.downloadFile(
-                    model.getItemUrl(idx, Size.full),
+                    model.getItemUrl(idx, model.getPref().downloadSize),
                     model.getBooru(),
                     model.getItemID(idx),
                     ConstStrings.format[model.getItemFormat(idx).index]);
@@ -221,7 +223,7 @@ class GalleryToolBar extends StatelessWidget {
                             idx,
                             (model.getItemFormat(idx) == ContentFormat.webm)
                                 ? Size.thumb
-                                : Size.large),
+                                : model.getPref().shareSize),
                         model.getBooru(),
                         model.getItemID(idx),
                         model.getItemFormat(idx));

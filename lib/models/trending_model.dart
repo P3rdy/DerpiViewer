@@ -6,12 +6,12 @@ import 'package:derpiviewer/models/pref_model.dart';
 class TrendingModel extends SearchInterface {
   List<ImageResponse> trendings = <ImageResponse>[];
   ImageResponse? featured;
-  late PrefModel _prefModel;
+  late PrefModel prefModel;
   int page = 1;
   int imageCount = 0;
   bool over = false;
   TrendingModel(PrefModel model) {
-    _prefModel = model;
+    prefModel = model;
     fetchMore(refresh: true);
   }
   Future fetchTrending(String booruHost, PrefParams params,
@@ -20,7 +20,7 @@ class TrendingModel extends SearchInterface {
     page = refresh ? 1 : page + 1;
     List<ImageResponse> more = await fetchImages(
         booru: booruHost,
-        query: _prefModel.featuredQuery,
+        query: prefModel.featuredQuery,
         filterID: params.filterID,
         page: page,
         perPage: params.perPage,
@@ -72,8 +72,8 @@ class TrendingModel extends SearchInterface {
 
   @override
   void fetchMore({bool refresh = false}) {
-    fetchTrending(_prefModel.booruHost, _prefModel.params,
-        key: _prefModel.key, refresh: refresh);
+    fetchTrending(prefModel.booruHost, prefModel.params,
+        key: prefModel.key, refresh: refresh);
   }
 
   @override
@@ -93,6 +93,11 @@ class TrendingModel extends SearchInterface {
 
   @override
   Booru getBooru() {
-    return _prefModel.booru;
+    return prefModel.booru;
+  }
+
+  @override
+  PrefModel getPref() {
+    return prefModel;
   }
 }

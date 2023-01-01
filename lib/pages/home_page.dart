@@ -55,7 +55,7 @@ class _MyHomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          await Provider.of<PrefModel>(context).savePref();
+          await Provider.of<PrefModel>(context, listen: false).savePref();
           return true;
         },
         child: Scaffold(
@@ -162,6 +162,19 @@ class HomeDrawer extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return const ChangeParamDialog();
+                });
+          },
+        ),
+        ListTile(
+          title: const Text("Download settings"),
+          subtitle:
+              const Text("Set prefered size", style: TextStyle(fontSize: 12.0)),
+          leading: const Icon(Icons.settings),
+          onTap: () async {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const ChangeDownloadPrefDialog();
                 });
           },
         ),

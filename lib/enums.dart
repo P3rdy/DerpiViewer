@@ -55,6 +55,7 @@ class ConstStrings {
       "Legacy Default": 37431,
       "18+ Dark": 37429,
       "Everything": 56027,
+      "-safe": 201603,
       "18+ R34": 37432,
       "Maximum Spoilers": 37430,
       "Default": 100073
@@ -63,6 +64,7 @@ class ConstStrings {
       "Legacy Default": 37431,
       "18+ Dark": 37429,
       "Everything": 56027,
+      "-safe": 201603,
       "18+ R34": 37432,
       "Maximum Spoilers": 37430,
       "Default": 100073
